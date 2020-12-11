@@ -1,4 +1,3 @@
-
 class Property {
     private String ownerName;
     private String address;
@@ -74,7 +73,33 @@ class Property {
         this.estimatedMarketValue = estimatedMarketValue;
         this.locationCategory = locationCategory;
         this.principalPrivateResidence = principalPrivateResidence;
-        this.tax = 0;
+        this.tax = calculateTax(estimatedMarketValue, locationCategory, principalPrivateResidence);
+    }
+
+    // Tax calculation without yearly compounding
+    public double calculateTax(double estimatedMarketValue, String locationCategory,
+            boolean principalPrivateResidence) {
+        double calculatedTax = 100;
+        double[] taxPercentages = { 0, 0.01, 0.02, 0.04 };
+        double remainder = estimatedMarketValue;
+        int iteration = 0;
+        for (; iteration < (estimatedMarketValue / 150000 + 1) && iteration < 4; iteration++) {
+            calculatedTax = calculatedTax + (150000 * taxPercentages[iteration]);
+            remainder = remainder - 150000;
+        }
+        calculatedTax = calculatedTax + (remainder / taxPercentages[iteration - 1]);
+
+        String[] places = { "City", "Large town", "Small town", "Village", "Countryside" };
+        int[] placeTax = { 100, 80, 60, 50, 25 };
+        for (int i = 0; i < places.length; i++) {
+            if (locationCategory.equalsIgnoreCase(places[i])) {
+                calculatedTax = calculatedTax + (placeTax[i]);
+            }
+        }
+        if (principalPrivateResidence == false) {
+            calculatedTax = calculatedTax + 100;
+        }
+        return calculatedTax;
     }
 
     // For testing

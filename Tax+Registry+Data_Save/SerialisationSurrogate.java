@@ -2,17 +2,26 @@ import java.util.ArrayList;
 import java.io.*;
 
 public class SerialisationSurrogate {
-    public static final String file = "out.csv";
+    public static String file = "out.csv";
+    public static final String folderPath = "output/";
+
+    public static void setFile(String file) {
+        SerialisationSurrogate.file = file;
+    }
+
+    public static String getFile() {
+        return file;
+    }
 
     /**
      * Takes an ArrayList<Property> and saves to csv
      * 
      * @param array ArrayList to save.
      */
-    public static void serialiseStorage(ArrayList<Property> array) {
+    public static void serialiseStorage(ArrayList<Property> array, String fileName) {
         try {
             // Create the BufferedWriter.
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(folderPath + fileName)));
 
             // Write each Property as a separate line in the csv file
             for (Property s : array) {
@@ -68,18 +77,18 @@ public class SerialisationSurrogate {
      * 
      * @return ArrayList<Property>.
      */
-    public static ArrayList<Property> deserialiseStorage() {
+    public static ArrayList<Property> deserialiseStorage(String fileName) {
         ArrayList<Property> x = new ArrayList<Property>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            BufferedReader fr = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(new FileReader(folderPath + fileName));
+            BufferedReader fr = new BufferedReader(new FileReader(folderPath + fileName));
 
             int lines = 0;
             while (fr.readLine() != null)
                 lines++;
             fr.close();
 
-            // Add a new Property to the ArrayList for each line that we have in the file
+            // Add a new Property to the ArrayList for each line that is in the CSV file
             for (int i = 0; i < lines; i++) {
                 x.add(read(br.readLine()));
             }
@@ -98,8 +107,6 @@ public class SerialisationSurrogate {
         String[] splitLine = line.split(", ", 0);
         Property s = new Property(splitLine[0], splitLine[1], splitLine[2], Double.parseDouble(splitLine[3]),
                 splitLine[4], Boolean.parseBoolean(splitLine[5]));
-
-        s.setTax(Tax.calculateTax(s));
         return s;
     }
 }
