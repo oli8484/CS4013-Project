@@ -1,0 +1,20 @@
+Oliver -
+ManagementSystem.java 
+Owner.java
+Payment.java
+Address.java
+User.java
+Eircode_RoutingKey.java
+UML diagram
+
+Seamie -
+
+
+Piotr -
+SerialisationSurrogate.java
+Property.java
+Tax.java
+Registry.java
+csvhandler.java
+
+Robert -
