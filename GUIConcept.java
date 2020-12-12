@@ -31,6 +31,7 @@ package testing;
  */
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javafx.application.Application;
@@ -132,7 +133,7 @@ public class GUIConcept extends Application {
         });
 
         //matches name to arraylist which has owners and will return info to disply later
-        //current code is tempoarary 
+        //if owner doesnt exist, throws error 
         loginbtn.setOnAction((ActionEvent event) -> {
             if (!nametext.getText().isEmpty() && !passwordtext.getText().isEmpty()) {
                 //owner1 = new Owner(nametext.getText(), passwordtext.getText());
@@ -268,6 +269,8 @@ public class GUIConcept extends Application {
         borderPane.setBottom(vbox);
         BorderPane.setAlignment(vbox, Pos.BOTTOM_CENTER);
 
+        //registers property, takes in all info and stores into an array list or properties
+        //if formatting is wrong, gives error to try again
         registerbtn.setOnAction((event) -> {
             try {
                 regownerName = nametext.getText();
@@ -333,13 +336,15 @@ public class GUIConcept extends Application {
         backbtn.setOnAction((event) -> { //return to userMenuGUI
             userMenuGUI(stage);
         });
-
+        
+        //names of all properties belonging to owner
         VBox propertybox = new VBox();
         propertybox.setSpacing(10);
         for (Property ownedPropertie : owner1.getOwnedProperties()) {
             propertybox.getChildren().add(new Label(ownedPropertie.getAddress()));
         }
-
+        
+        //tax belonging to all properties of owner
         VBox taxbox = new VBox();
         taxbox.setSpacing(10);
         for (Property ownedPropertie : owner1.getOwnedProperties()) {
@@ -366,7 +371,6 @@ public class GUIConcept extends Application {
      * property on that year
      */
     public void userBalanceGUI(Stage stage) {
-
         //sets up top of screen with labels, textfields etc
         TextField propertytext = new TextField();
         TextField yeartext = new TextField();
@@ -422,10 +426,13 @@ public class GUIConcept extends Application {
         vboxfinal.getChildren().add(hbox2);
         vboxfinal.getChildren().add(infobox);
         vboxfinal.getChildren().add(taxbox);
-
+        
+        //gets year and address
+        //returns the tax for that address for that year
+        //if formatted wrong, gives error
         submitbtn.setOnAction((ActionEvent event) -> {
             try {
-                if (!yeartext.getText().isEmpty() && !propertytext.getText().isEmpty()) {
+                if (!yeartext.getText().isEmpty() && !propertytext.getText().isEmpty()) { //if empty, dont do anything
                     int year = Integer.parseInt(yeartext.getText());
                     String address = propertytext.getText();
                     currentproperty = Tax.getPropertyByAddress(address);
@@ -444,6 +451,9 @@ public class GUIConcept extends Application {
             userMenuGUI(stage);
         });
 
+        //ability to pay tax on the property
+        //creates record of the tax payment for keeps
+        //if formatted wrong, gives error
         paytaxbtn.setOnAction((ActionEvent event) -> {
             try {
                 Date date = Calendar.getInstance().getTime();
@@ -516,8 +526,8 @@ public class GUIConcept extends Application {
      */
     public void managementViewTaxGUI(Stage stage) {
         Button backbtn = new Button("BACK");
-        Button searchyear = new Button("Search By Year");
-        Button searchproperty = new Button("Search By Property Name");
+        Button searchyear = new Button("Search By Address");
+        Button searchproperty = new Button("Search By Owmer Name");
         HBox hbox = new HBox();
         hbox.setSpacing(5);
         hbox.getChildren().add(backbtn);
@@ -527,11 +537,11 @@ public class GUIConcept extends Application {
         backbtn.setOnAction((ActionEvent event) -> { //Backs out to managementGUI
             managementGUI(stage);
         });
-        searchyear.setOnAction((ActionEvent event) -> { //Invoke managementViewYearTaxGUI
-            managementViewYearTaxGUI(stage);
+        searchyear.setOnAction((ActionEvent event) -> { //Invoke managementViewAddressTaxGUI
+            managementViewAddressTaxGUI(stage);
         });
-        searchproperty.setOnAction((ActionEvent event) -> { //Invoke managementViewPropertyTaxGUI
-            managementViewPropertyTaxGUI(stage);
+        searchproperty.setOnAction((ActionEvent event) -> { //Invoke managementViewOwnerTaxGUI
+            managementViewOwnerTaxGUI(stage);
         });
 
         BorderPane borderPane = new BorderPane();
@@ -548,28 +558,58 @@ public class GUIConcept extends Application {
      * "Sub" method for managementViewTaxGUI Search database to display tax due
      * for all properties for a specific year
      */
-    public void managementViewYearTaxGUI(Stage stage) {
+    public void managementViewAddressTaxGUI(Stage stage) {
         Button backbtn = new Button("BACK");
-        Button yearbtn = new Button("Search");
-        Label yearlabel = new Label("Enter Year");
-        yearlabel.setStyle("-fx-font-weight: bold");
-        TextField yeartext = new TextField();
+        Button addressbtn = new Button("Search");
+        Label addresslabel = new Label("Enter Address");
+        addresslabel.setStyle("-fx-font-weight: bold");
+        TextField addresstext = new TextField();
+        
+        Label yearlabel=new Label("Year");
+        Label taxlabel=new Label("Tax");
+        HBox labelbox=new HBox();
+        labelbox.setSpacing(150);
+        labelbox.getChildren().add(yearlabel);
+        labelbox.getChildren().add(taxlabel);
+        labelbox.setStyle("-fx-font-weight: bold");
+        
+        HBox lastbox=new HBox();
+        lastbox.setSpacing(100);
+        VBox vboxyear=new VBox();
+        vboxyear.setSpacing(10);
+        //label for all years to display taxes for
+        for(int i=2020;i>2010;i--)
+            vboxyear.getChildren().add(new Label(Integer.toString(i)));
+        lastbox.getChildren().add(vboxyear);
+        
+        
         VBox vbox = new VBox();
         vbox.setSpacing(10);
         HBox hbox = new HBox();
         hbox.setSpacing(5);
-        hbox.getChildren().add(yearlabel);
-        hbox.getChildren().add(yeartext);
-        hbox.getChildren().add(yearbtn);
+        hbox.getChildren().add(addresslabel);
+        hbox.getChildren().add(addresstext);
+        hbox.getChildren().add(addressbtn);
         vbox.getChildren().add(backbtn);
         vbox.getChildren().add(hbox);
+        vbox.getChildren().add(labelbox);
+        vbox.getChildren().add(lastbox);
+        
+        VBox taxbox=new VBox();
+        taxbox.setSpacing(10);
 
         backbtn.setOnAction((ActionEvent event) -> { //Backs out to managementViewTaxGUI
             managementViewTaxGUI(stage);
         });
 
-        yearbtn.setOnAction((ActionEvent event) -> {
-            //displays all tax payments for that year
+        //returns taxes for specific years for the property with the entered address and displays them
+        addressbtn.setOnAction((ActionEvent event) -> {
+            currentproperty=Tax.getPropertyByAddress(addresstext.getText());
+            for(int i=2020;i>2010;i--)
+            {
+                taxbox.getChildren().add(new Label(currentproperty.getPreviousYearData(i).getTax()));
+                lastbox.getChildren().add(taxbox);
+            }
         });
 
         BorderPane borderPane = new BorderPane();
@@ -577,7 +617,7 @@ public class GUIConcept extends Application {
         BorderPane.setAlignment(vbox, Pos.TOP_LEFT);
 
         Scene scene = new Scene(borderPane, 450, 300);
-        stage.setTitle("View Tax By Year");
+        stage.setTitle("View Tax By Address");
         stage.setScene(scene);
         stage.show(); //Display GUI  
     }
@@ -586,28 +626,58 @@ public class GUIConcept extends Application {
      * "Sub" method for managementViewTaxGUI Search database to display tax due
      * for a property for all years
      */
-    public void managementViewPropertyTaxGUI(Stage stage) {
+    public void managementViewOwnerTaxGUI(Stage stage) {
         Button backbtn = new Button("BACK");
-        Button propertybtn = new Button("Search");
-        Label propertylabel = new Label("Enter Property Name");
-        propertylabel.setStyle("-fx-font-weight: bold");
-        TextField propertytext = new TextField();
+        Button ownerbtn = new Button("Search");
+        Label ownerlabel = new Label("Enter Owner name");
+        ownerlabel.setStyle("-fx-font-weight: bold");
+        TextField ownertext = new TextField();
+        
+        Label yearlabel=new Label("Year");
+        Label taxlabel=new Label("Tax");
+        HBox labelbox=new HBox();
+        labelbox.setSpacing(150);
+        labelbox.getChildren().add(yearlabel);
+        labelbox.getChildren().add(taxlabel);
+        labelbox.setStyle("-fx-font-weight: bold");
+        
+        HBox lastbox=new HBox();
+        lastbox.setSpacing(100);
+        VBox vboxyear=new VBox();
+        vboxyear.setSpacing(10);
+        //label for all years to display taxes for
+        for(int i=2020;i>2010;i--)
+            vboxyear.getChildren().add(new Label(Integer.toString(i)));
+        lastbox.getChildren().add(vboxyear);
+        
+        
         VBox vbox = new VBox();
         vbox.setSpacing(10);
         HBox hbox = new HBox();
         hbox.setSpacing(5);
-        hbox.getChildren().add(propertylabel);
-        hbox.getChildren().add(propertytext);
-        hbox.getChildren().add(propertybtn);
+        hbox.getChildren().add(ownerlabel);
+        hbox.getChildren().add(ownertext);
+        hbox.getChildren().add(ownerbtn);
         vbox.getChildren().add(backbtn);
         vbox.getChildren().add(hbox);
+        vbox.getChildren().add(labelbox);
+        vbox.getChildren().add(lastbox);
+        
+        VBox taxbox=new VBox();
+        taxbox.setSpacing(10);
 
         backbtn.setOnAction((ActionEvent event) -> { //Backs out to managementViewTaxGUI
             managementViewTaxGUI(stage);
         });
 
-        propertybtn.setOnAction((ActionEvent event) -> {
-            //displays all tax payments for that property
+        //returns taxes for specific years for the properties of owner and displays them
+        ownerbtn.setOnAction((ActionEvent event) -> {
+            currentproperty=Tax.getPropertiesByOwner(ownertext.getText()).get(1);
+            for(int i=2020;i>2010;i--)
+            {
+                taxbox.getChildren().add(new Label(currentproperty.getPreviousYearData(i).getTax()));
+                lastbox.getChildren().add(taxbox);
+            }
         });
 
         BorderPane borderPane = new BorderPane();
@@ -615,14 +685,15 @@ public class GUIConcept extends Application {
         BorderPane.setAlignment(vbox, Pos.TOP_LEFT);
 
         Scene scene = new Scene(borderPane, 450, 300);
-        stage.setTitle("View Tax By Property");
+        stage.setTitle("View Tax By Owner Name");
         stage.setScene(scene);
-        stage.show(); //Display GUI  
+        stage.show(); //Display GUI   
     }
 
     /**
      * Displays overdue tax for a specific location for a specific year
      */
+    //unfinished
     public void managementViewOverDueTaxGUI(Stage stage) {
         Button backbtn = new Button("BACK");
         Button yearbtn = new Button("Search");
@@ -680,12 +751,25 @@ public class GUIConcept extends Application {
         VBox vbox = new VBox();
         vbox.setSpacing(7);
 
+        HBox infobox=new HBox();
+        VBox propbox=new VBox();
+        VBox taxbox=new VBox();
+        VBox taxablebox=new VBox();
+            
         backbtn.setOnAction((ActionEvent event) -> { //Backs out to managementGUI
             managementGUI(stage);
         });
-
+        
+        //gets all properties based on eircode routing key
+        //displays property address, tax, taxable amount for each one
         searchbtn.setOnAction((ActionEvent event) -> {
-            //searches by area and displays stats
+            ArrayList<Property> arrlist=Tax.getPropertiesByEircodeRoutingKey(eircodetext.getText().getRoutingKey());
+            for(int i=0;i<=arrlist.size();i++){
+               propbox.getChildren().add(new Label(arrlist.get(i).getAddress()));
+               taxbox.getChildren().add(new Label(Double.toString(arrlist.get(i).getTax())));
+               taxablebox.getChildren().add(new Label(Double.toString(arrlist.get(i).getTax())));
+            }
+                
         });
 
         Label propertylabel = new Label("Property Name");
@@ -730,6 +814,9 @@ public class GUIConcept extends Application {
         taxratebox.setSpacing(7);
         vbox.setSpacing(7);
 
+        Label revenuelabel=new Label("New Revenue");
+        Label revenuelabel2=new Label();
+        
         taxratebox.getChildren().add(taxratelabel);
         taxratebox.getChildren().add(taxratetext);
         taxratebox.getChildren().add(taxratebtn);
@@ -739,8 +826,11 @@ public class GUIConcept extends Application {
         backbtn.setOnAction((ActionEvent event) -> { //Backs out to managementGUI
             managementGUI(stage);
         });
+        
+        //Shows new revenue for new proposed tax amount
         taxratebtn.setOnAction((ActionEvent event) -> {
-            //Displays new tax rate revenue below
+            double taxrate=Double.parseDouble(taxratetext.getText());
+            revenuelabel2.setText(impactOfChangedTaxRates_OnRevenue(taxrate));
         });
 
         BorderPane borderPane = new BorderPane();
