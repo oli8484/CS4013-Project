@@ -1,8 +1,7 @@
 
-/** 
+/**
  * @author Piotr Kramkowski
  */
-import java.util.ArrayList;
 
 public class test {
     // This is only a test class (do not use)

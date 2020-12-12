@@ -9,6 +9,8 @@ public class Registry {
 
     public static Registry registry = new Registry();
 
+    Property empty = new Property("", "", "", 0, "", false);
+
     // Temporaty storage of current year's CSV file in memory
     public static ArrayList<Property> properties;
 
@@ -51,5 +53,21 @@ public class Registry {
         ArrayList<Property> temp = new ArrayList<Property>();
         temp = SerialisationSurrogate.deserialiseStorage((Calendar.getInstance().get(Calendar.YEAR) - 1) + ".csv");
         SerialisationSurrogate.serialiseStorage(temp, (Calendar.getInstance().get(Calendar.YEAR) + ".csv"));
+    }
+
+    /**
+     * Look for a property that contains the input address If returns a property
+     * with empty fields, no match was found
+     * 
+     * @param address Address to scan for
+     * @return property object with provided address
+     */
+    public Property getPropertyByAddress(String address) {
+        for (int i = 0; i < properties.size(); i++) {
+            if (properties.get(i).getAddress().equalsIgnoreCase(address)) {
+                return properties.get(i);
+            }
+        }
+        return empty;
     }
 }
