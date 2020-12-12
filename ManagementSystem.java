@@ -5,54 +5,50 @@
  * @version (1)
  */
 import java.util.ArrayList;
-public class ManagementSystem extends User  {    
-public ArrayList<Property> listOfProperties;
+public class ManagementSystem   {    
+public ArrayList<Property> propertyList;
 public ArrayList<Owner> propertyOwners;
 public ArrayList<Payment> payment;
+    
 Property p;   
 Owner o; 
-SerialisationSurrogate object = new SerialisationSurrogate(); 
+ListOfProperties propertieslist = new ListOfProperties(); 
 ListOfPayments payments = new ListOfPayments();   // ListOfPayments is a class which stores the list of payments   in a csv file 
-
+ListOfOwners o = new ListOfOwners();// List Of Owners stored in csv 
 public  ManagementSystem(){
 }
 //Gets property tax payment data for any property  
-public String taxPaymentHistory_ForProperty( Property p) {
- for(int i= 0; i<listOfProperties.size(); i++) {
-            if(p.equals(i)) {
-                p.getPayment();//Property class needs a get payment method
-            } else {
-                System.out.println("Error: No Records found ");
-            }
-        }
+public ArrayList<Payment> taxPaymentHistory_ForProperty( Property p) {
+ return payments.getPayments_Property(p);
     }
 
 //Gets tax payment data for any property owner 
-public int taxPaymentHistory_ForOwner(Owner o) {
-for(int i= 0; i<propertyOwners.size(); i++) {
-            if(p.equals(i)) {
-                p.getPayment();//Owner class needs a get payment method
-            } else {
-                System.out.println("Error: No Records found ");
-            }
-        }
+public ArrayList<Payment> taxPaymentHistory_ForOwner(Owner o) {
+return payments.getPayments_Owner(o);
 }
 //Gets list of overdue property tax for a selected year/with option 
 // to select an area based on routing key/eircode
-public int overdueTaxForYear_BasedOnLocation(int year, String eircode,String routingKey) {
+public PropertyTax overdueTaxForYear_BasedOnLocation(String date, String eircode) {
 
+ for (Property property2 : propertyList) {
+            if (date.equals(property2.getPayment().getDatePaid()) && routingKey.equals(property2.getAddress().getEircode())) {
+                PropertyTax overDueTax = property2.getTax();
+                return overDueTax;
 
-
-
-
-}
+            }
+        }
+ return null;
+    }
 //Gets tax stats for area based on eircode/routing key
-public int statsForArea_BasedOnLocation(String eircode, String routingKey) {
+public double statsForArea_BasedOnLocation(String eircode, String routingKey) {
+ for (Property property3 : propertyList) {
+            if (routingKey.equals(property3.getAddress().getEircode())) {
+                return property3.getTax().getTaxableAmount();
 
 
-
-
-
+            }
+        }
+return 0;
 }
 //Shows impacts relating to revenue collected when levies and property
 //taxes change
