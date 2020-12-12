@@ -1,21 +1,12 @@
+
+/** 
+ * @author Piotr Kramkowski
+ */
 import java.util.ArrayList;
 
 public class test {
     // This is only a test class (do not use)
     public static void main(String[] args) {
-        Property adc = new Property("Johnny", "somewhere", "numbers", 23242356, "City", true);
-        Property cda = new Property("Jimmy", "nowhere", "digits", 273649, "Village", false);
-        ArrayList<Property> arrayOne = new ArrayList<Property>();
-        arrayOne.add(adc);
-        arrayOne.add(cda);
-
-        Property bc = new Property("1", "2", "3", 23242356, "City", true);
-        Property cb = new Property("1", "4", "5", 273649, "Village", false);
-        ArrayList<Property> arrayTwo = new ArrayList<Property>();
-        arrayTwo.add(bc);
-        arrayTwo.add(cb);
-
-        SerialisationSurrogate.serialiseStorage(arrayTwo, "2020.csv");
 
         System.out.println("------------------");
 

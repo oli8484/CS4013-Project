@@ -1,3 +1,6 @@
+/**
+ * @author Piotr Kramkowski
+ */
 class Property {
     private String ownerName;
     private String address;

@@ -1,3 +1,7 @@
+
+/** 
+ * @author Piotr Kramkowski
+ */
 import java.util.ArrayList;
 import java.util.Calendar;
 

@@ -1,2 +1,2 @@
-1, 2, 3, 2.3242356E7, City, true
-1, 4, 5, 273649.0, Village, false
+OwnerName, Address, Eircode, 123456.0, LocationCategory, true
+OwnerName1, Address1, Eircode1, 123456.0, LocationCategory1, true

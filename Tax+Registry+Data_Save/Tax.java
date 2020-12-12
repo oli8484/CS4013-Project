@@ -1,3 +1,7 @@
+
+/** 
+ * @author Piotr Kramkowski
+ */
 import java.util.ArrayList;
 
 public class Tax {
