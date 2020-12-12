@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class test {
     // This is only a test class (do not use)
@@ -31,7 +30,5 @@ public class test {
 
         // This writes stored data to CSV file
         Registry.getInstance().writeCSV();
-
-        System.out.println(Calendar.getInstance().get(Calendar.YEAR) + ".csv");
     }
 }

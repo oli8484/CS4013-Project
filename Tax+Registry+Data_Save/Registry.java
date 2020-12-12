@@ -8,7 +8,7 @@ public class Registry {
     // Temporaty storage of current year's CSV file in memory
     public static ArrayList<Property> properties;
 
-    // Classes used to register a new property
+    // Methods used to register a new property
     private Registry() {
         properties = new ArrayList<Property>();
         readCSV();

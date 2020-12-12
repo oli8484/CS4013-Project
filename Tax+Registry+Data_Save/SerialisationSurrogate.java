@@ -4,7 +4,7 @@ import java.io.*;
 public class SerialisationSurrogate {
 
     public static String file = "out.csv";
-    public static final String folderPath = "output/";
+    public static final String folderPath = "registered_properties/";
 
     // Get and set methods for output file name
     public static void setFile(String file) {
