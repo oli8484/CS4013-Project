@@ -29,6 +29,10 @@ package testing;
  * NEED TO ADD: way to pay tax is search function necessary in view property??
  *
  */
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -46,6 +50,7 @@ import javafx.stage.Stage;
 public class GUIConcept extends Application {
 
     Owner owner1;
+    Property currentproperty;
 
     private String regownerName;
     private String regaddress;
@@ -305,9 +310,7 @@ public class GUIConcept extends Application {
      * each property
      */
     public void userViewPropertyGUI(Stage stage) {
-
         Button backbtn = new Button("BACK"); //return to userMenuGUI
-
         Label namelabel = new Label("Property Name");
         Label duelabel = new Label("Due Tax");
         Label overduelabel = new Label("Overdue Tax");
@@ -315,6 +318,7 @@ public class GUIConcept extends Application {
         //add above all to boxes for display
         VBox vbox = new VBox();
         HBox titlebox = new HBox();
+
         vbox.setSpacing(10);
         titlebox.setSpacing(130);
 
@@ -329,6 +333,23 @@ public class GUIConcept extends Application {
         backbtn.setOnAction((event) -> { //return to userMenuGUI
             userMenuGUI(stage);
         });
+
+        VBox propertybox = new VBox();
+        propertybox.setSpacing(10);
+        for (Property ownedPropertie : owner1.getOwnedProperties()) {
+            propertybox.getChildren().add(new Label(ownedPropertie.getAddress()));
+        }
+
+        VBox taxbox = new VBox();
+        taxbox.setSpacing(10);
+        for (Property ownedPropertie : owner1.getOwnedProperties()) {
+            propertybox.getChildren().add(new Label(Double.toString(ownedPropertie.getTax())));
+        }
+
+        HBox hbox1 = new HBox();
+        hbox1.setSpacing(100);
+        hbox1.getChildren().add(propertybox);
+        hbox1.getChildren().add(taxbox);
 
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(vbox);
@@ -345,10 +366,11 @@ public class GUIConcept extends Application {
      * property on that year
      */
     public void userBalanceGUI(Stage stage) {
+
         //sets up top of screen with labels, textfields etc
         TextField propertytext = new TextField();
         TextField yeartext = new TextField();
-        Label propertylabel = new Label("Property Name:");
+        Label propertylabel = new Label("Property Address:");
         Label yearlabel = new Label("Year:");
         Label paytaxlabel = new Label("Pay Tax");
         propertylabel.setStyle("-fx-font-weight: bold");
@@ -373,24 +395,24 @@ public class GUIConcept extends Application {
         HBox hbox2 = new HBox();
         hbox2.setSpacing(90);
         hbox2.setStyle("-fx-font-weight: bold");
-        Label propertydisplabel = new Label("Property Name");
-        Label yearlabeldisplabel = new Label("Year");
         Label taxduelabel = new Label("Tax Due");
-        hbox2.getChildren().add(propertydisplabel);
-        hbox2.getChildren().add(yearlabeldisplabel);
         hbox2.getChildren().add(taxduelabel);
         hbox2.getChildren().add(paytaxlabel);
 
         HBox infobox = new HBox();
         infobox.setSpacing(90);
-        Label actualpropertynamelabel = new Label("empty");
-        Label actualyearlabel = new Label("empty");
-        Label actualtaxduelabel = new Label("empty");
+        Label actualtaxduelabel;
+        actualtaxduelabel = new Label();
         Button paytaxbtn = new Button("Pay Tax");
-        infobox.getChildren().add(actualpropertynamelabel);
-        infobox.getChildren().add(actualyearlabel);
         infobox.getChildren().add(actualtaxduelabel);
         infobox.getChildren().add(paytaxbtn);
+
+        Label taxpaylabel = new Label("Amount of Tax to Pay:");
+        TextField taxpaytext = new TextField();
+        HBox taxbox = new HBox();
+        taxbox.setSpacing(10);
+        taxbox.getChildren().add(taxpaylabel);
+        taxbox.getChildren().add(taxpaytext);
 
         VBox vboxfinal = new VBox();
         vboxfinal.setSpacing(10);
@@ -399,9 +421,23 @@ public class GUIConcept extends Application {
         vboxfinal.getChildren().add(hboxbtn);
         vboxfinal.getChildren().add(hbox2);
         vboxfinal.getChildren().add(infobox);
+        vboxfinal.getChildren().add(taxbox);
 
         submitbtn.setOnAction((ActionEvent event) -> {
-            //Searches for the property and year, then displays the tax due for that property on that year
+            try {
+                if (!yeartext.getText().isEmpty() && !propertytext.getText().isEmpty()) {
+                    int year = Integer.parseInt(yeartext.getText());
+                    String address = propertytext.getText();
+                    currentproperty = Tax.getPropertyByAddress(address);
+                    actualtaxduelabel.setText(Double.toString(currentproperty.getTax()));
+                }
+            } catch (NumberFormatException ex) {
+                Alert a = new Alert(AlertType.NONE);
+                a.setAlertType(AlertType.ERROR);
+                a.setContentText("Formatting incorrect! Try again");
+                a.show();
+            }
+
         });
 
         backbtn.setOnAction((ActionEvent event) -> { //Backs out to userMenuGUI
@@ -409,9 +445,17 @@ public class GUIConcept extends Application {
         });
 
         paytaxbtn.setOnAction((ActionEvent event) -> {
-            //Pays tax on specific property and year
-            //prompts you to enter anount of tax to pay
-            //if you submit too - error
+            try {
+                Date date = Calendar.getInstance().getTime();
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+                String strDate = dateFormat.format(date);
+                Payment pay1 = new Payment(strDate, Double.parseDouble(taxpaytext.getText()), currentproperty);
+            } catch (NumberFormatException ex) {
+                Alert a = new Alert(AlertType.NONE);
+                a.setAlertType(AlertType.ERROR);
+                a.setContentText("Formatting incorrect! Try again");
+                a.show();
+            }
         });
 
         BorderPane borderPane = new BorderPane();
