@@ -2,9 +2,11 @@ import java.util.ArrayList;
 import java.io.*;
 
 public class SerialisationSurrogate {
+
     public static String file = "out.csv";
     public static final String folderPath = "output/";
 
+    // Get and set methods for output file name
     public static void setFile(String file) {
         SerialisationSurrogate.file = file;
     }
@@ -16,11 +18,12 @@ public class SerialisationSurrogate {
     /**
      * Takes an ArrayList<Property> and saves to csv
      * 
-     * @param array ArrayList to save.
+     * @param array    ArrayList to save
+     * @param fileName Name of file to store to
      */
     public static void serialiseStorage(ArrayList<Property> array, String fileName) {
         try {
-            // Create the BufferedWriter.
+            // Create the BufferedWriter
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(folderPath + fileName)));
 
             // Write each Property as a separate line in the csv file
@@ -75,7 +78,7 @@ public class SerialisationSurrogate {
     /**
      * Read csv file and save to ArrayList
      * 
-     * @return ArrayList<Property>.
+     * @return ArrayList<Property>
      */
     public static ArrayList<Property> deserialiseStorage(String fileName) {
         ArrayList<Property> x = new ArrayList<Property>();

@@ -76,7 +76,14 @@ class Property {
         this.tax = calculateTax(estimatedMarketValue, locationCategory, principalPrivateResidence);
     }
 
-    // Tax calculation without yearly compounding
+    /**
+     * Tax calculation without yearly compounding
+     * 
+     * @param estimatedMarketValue
+     * @param locationCategory
+     * @param principalPrivateResidence
+     * @return Tax calculated based on given data
+     */
     public double calculateTax(double estimatedMarketValue, String locationCategory,
             boolean principalPrivateResidence) {
         double calculatedTax = 100;
