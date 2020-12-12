@@ -1,20 +1,21 @@
 public class NeedsToBeAddedToListOfPayments {
  // gets list of payments for owner 
-    public ArrayList<Payment> getPaymentsForOwner(Owner o) {
+    
+public ArrayList<Payment> getPaymentsForOwner(Owner o) {
         ArrayList<Payment> py = new ArrayList<>();
-        for (Payment pay : payments) {
-            if (pay.getProperty().getPropertyOwner().equals(p)) {
-                payments.add(pay);
+        for (Payment pay : paymentList) {
+            if (pay.getProperty().getPropertyOwner().equals(o)) {
+                paymentList.add(pay);
             }
         }
         return py;
+	
     }
-    // gets list of payemnts for property
-    public ArrayList<Payment> getPropertyForProperty(Property p) {
+    public ArrayList<Payment> getPaymentsForProperty(Property p) {
         ArrayList<Payment> py = new ArrayList<>();
-        for (Payment pay : payments) {
+        for (Payment pay : paymentList) {
             if (pay.getProperty().equals(p)) {
-                payments.add(pay);
+                paymentList.add(pay);
             }
         }
         return py;
