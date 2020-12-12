@@ -4,7 +4,7 @@ public class Things_we_need {
     ///////////////Classes//////////
     //1. ListOfOwners 
     //2. ListOfUsers
-    //3. ListOfPayments
+   
     //4. ListOfProperties
     //5.Main Class 
     //6. Csv Handler 
