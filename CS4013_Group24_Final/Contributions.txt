@@ -6,6 +6,8 @@ Address.java
 User.java
 Eircode_RoutingKey.java
 UML diagram
+CRC cards
+
 
 Seamie -
 
