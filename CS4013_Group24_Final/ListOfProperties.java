@@ -20,7 +20,7 @@ public class ListOfProperties {
 		propertyList.add(pro2);
 		propertyList.add(pro3);
 		
-		csvhandler.serialiseStorage(propertyList, "List_Of_Properties");
+		csvhandler.serialiseStorage(propertyList, "List_Of_Properties.csv");
 	}
 	
 }
