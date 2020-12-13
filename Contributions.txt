@@ -18,3 +18,7 @@ Registry.java
 csvhandler.java
 
 Robert -
+ListOfPayments.java
+ListOfProperties.java
+ListOfUsers.java
+ListOfOwners.java
