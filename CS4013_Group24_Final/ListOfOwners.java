@@ -20,7 +20,7 @@ public class ListOfOwners {
 		ownerList.add(o2);
 		ownerList.add(o3);
 		
-		csvhandler.serialiseStorage(ownerList, "List_Of_Owners");
+		csvhandler.serialiseStorage(ownerList, "List_Of_Owners.csv");
 		
 	}
 	
