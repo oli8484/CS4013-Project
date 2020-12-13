@@ -20,7 +20,7 @@ public class ListOfPayments {
 		paymentList.add(p2);
 		paymentList.add(p3);
 		
-		csvhandler.serialiseStorage(paymentList, "List_Of_Payments");
+		csvhandler.serialiseStorage(paymentList, "List_Of_Payments.csv");
 	}
 	
 	private void PaymentListCSV() {
