@@ -22,7 +22,7 @@ public class ListOfUsers {
 		userList.add(u3);
 		userList.add(u4);
 		
-		csvhandler.serialiseStorage(userList, "List_Of_Users");
+		csvhandler.serialiseStorage(userList, "List_Of_Users.csv");
 	}
 	
 	public void addUser(String[] o) {
