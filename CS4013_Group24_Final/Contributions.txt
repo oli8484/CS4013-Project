@@ -13,7 +13,8 @@ CRC cards
 
 
 Seamie -
-
+CommandLine.java
+GUI.java
 
 Piotr -
 SerialisationSurrogate.java
